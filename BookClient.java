@@ -1,3 +1,7 @@
+import com.sun.xml.internal.bind.v2.TODO;
+
+import java.net.DatagramSocket;
+import java.net.InetAddress;
 import java.util.Scanner;
 import java.io.*;
 import java.util.*;
@@ -53,4 +57,16 @@ public class BookClient {
             e.printStackTrace();
         }
     }
+
+    public static void sendUDP(String message, int port,
+                                  InetAddress address,
+                                  DatagramSocket socket){
+        //TODO: Send UDP message following the protocol
+    }
+
+    public static String receiveUDP(DatagramSocket socket){
+        //TODO: receive UDP message and return the String
+        return "";
+    }
+
 }

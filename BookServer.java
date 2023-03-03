@@ -29,7 +29,6 @@ public class BookServer {
             System.out.println("File not found!");
         }
 
-
         // TODO: handle request from clients
     }
 }
