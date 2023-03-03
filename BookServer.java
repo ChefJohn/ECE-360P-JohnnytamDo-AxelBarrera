@@ -1,3 +1,6 @@
+import java.io.*;
+import java.util.*;
+
 public class BookServer {
     public static void main(String[] args) {
         int tcpPort;
@@ -10,9 +13,22 @@ public class BookServer {
         tcpPort = 7000;
         udpPort = 8000;
 
-        // parse the inventory file
+        HashMap<String, Integer> bookCountMap = new HashMap<>();
 
-        //swax gay
+        // parse the inventory file
+        File file = new File(fileName);
+
+        try {
+            Scanner sc = new Scanner(file);
+
+            while(sc.hasNextLine()){
+                
+            }
+        }
+        catch (FileNotFoundException e){
+            System.out.println("File not found!");
+        }
+
 
         // TODO: handle request from clients
     }
