@@ -37,7 +37,7 @@ public class BookClient {
         BufferedWriter file = new BufferedWriter(fileWriter);
 
         try {
-            Scanner sc = new Scanner(new FileReader(commandFile));
+            Scanner sc = new Scanner(new FileReader(commandFile+".txt"));
 
             while (sc.hasNextLine()) {
                 String cmd = sc.nextLine();
@@ -53,7 +53,7 @@ public class BookClient {
                 if (tokens[0].equals("set-mode")) {
                     // TODO: set the mode of communication for sending commands to the server
                     arg1 = tokens[1];
-                    command = interpretCommand(0, arg1, arg2);
+                    command = interpretCommand(0, tokens);
                     if ((mode && tokens[1].equals("t")) || (!mode && tokens[1].equals("u"))) switchModeFlag = true;
 
                 } else if (tokens[0].equals("begin-loan")) {
@@ -61,24 +61,25 @@ public class BookClient {
                     // appropriate responses form the server
                     arg1 = tokens[1];
                     arg2 = tokens[2];
-                    command = interpretCommand(1, arg1, arg2);
+                    command = interpretCommand(1, tokens);
                 } else if (tokens[0].equals("end-loan")) {
                     // TODO: send appropriate command to the server and display the
                     // appropriate responses form the server
                     arg1 = tokens[1];
-                    command = interpretCommand(2, arg1, arg2);
+                    command = interpretCommand(2, tokens);
                 } else if (tokens[0].equals("get-loans")) {
                     // TODO: send appropriate command to the server and display the
                     // appropriate responses form the server
                     arg1 = tokens[1];
-                    command = interpretCommand(3, arg1, arg2);
+                    command = interpretCommand(3, tokens);
                 } else if (tokens[0].equals("get-inventory")) {
                     // TODO: send appropriate command to the server and display the
                     // appropriate responses form the server
-                    command = interpretCommand(4, arg1, arg2);
+                    command = interpretCommand(4, tokens);
                 } else if (tokens[0].equals("exit")) {
                     // TODO: send appropriate command to the server
-                    command = interpretCommand(5, arg1, arg2);
+                    command = interpretCommand(5,tokens);
+                    file.close();
                 } else {
                     System.out.println("ERROR: No such command");
                 }
@@ -112,7 +113,7 @@ public class BookClient {
         }
     }
 
-    private static String interpretCommand(int commandID, String arg1, String arg2){
+    private static String interpretCommand(int commandID, String[] token){
         String message = "";
 
         //interpretting commands that have 0 args
@@ -121,11 +122,15 @@ public class BookClient {
         
         //interpretting commands that have 1 arg
         } else if (commandID == 0 || commandID == 2 || commandID == 3){                   
-            message = commandID + "|" + arg1;
+            message = commandID + "|" + token[1];
         
         //interpretting commands that have 2 args (so just begin-loan command)
         } else {
-            message = commandID + "|" + arg1 + "|" + arg2;
+            message = commandID + "|" + token[1] + "|";
+            for(int i =2;i< token.length-1;i++){
+                message+=token[i] +" ";
+            }
+            message += token[token.length-1];
         }
 
         return message;

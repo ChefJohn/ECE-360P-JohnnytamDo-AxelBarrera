@@ -1,0 +1,25 @@
+Your request has been approved, 1 Mike "The Letter"
+Request Failed - Book not available
+Your request has been approved, 2 Lucy "Divergent"
+Your request has been approved, 3 Mike "The Great Gatsby"
+Your request has been approved, 4 Mike "The Great Gatsby"
+No record found for Jack
+The communication mode is set to TCP
+The communication mode is set to UDP
+"The Letter" 0
+"The Count of Monte Cristo" 17
+"The Great Gatsby" 13
+"Divergent" 9
+The communication mode is set to TCP
+Request Failed - We do not have this book
+1 "The Letter"
+3 "The Great Gatsby"
+4 "The Great Gatsby"
+1 is returned
+The communication mode is set to UDP
+3 is returned
+10 not found, no such borrow record
+"The Letter" 1
+"The Count of Monte Cristo" 17
+"The Great Gatsby" 14
+"Divergent" 9

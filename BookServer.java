@@ -17,11 +17,11 @@ public class BookServer {
     public static void main(String[] args) throws Exception {
         int tcpPort;
         int udpPort;
-        // if (args.length != 1) {
-        //     System.out.println("ERROR: Provide 1 argument: input file containing initial inventory");
-        //     System.exit(-1);
-        // }
-        //String fileName = args[0];
+         if (args.length != 1) {
+             System.out.println("ERROR: Provide 1 argument: input file containing initial inventory");
+             System.exit(-1);
+         }
+        String fileName = args[0];
         tcpPort = 7000;
         udpPort = 8000;
         /**
@@ -37,7 +37,8 @@ public class BookServer {
         BookServer server = new BookServer();
 
         // parse the inventory file (also change this to the filename variable when done testing)
-        File file = new File("/Users/johnnydo/Documents/School/Concurrent/Project3/ECE-360P-JohnnytamDo-AxelBarrera/input_file.txt");
+//        String temp = args[0]+".txt"
+        File file = new File(args[0]+".txt");
 
         try {
             Scanner sc = new Scanner(file);
@@ -52,6 +53,7 @@ public class BookServer {
         }
         catch (FileNotFoundException e){
             System.out.println("File not found!");
+            System.exit(-1);
         } 
 
         // TODO: handle request from clients
@@ -62,6 +64,9 @@ public class BookServer {
 
         /*
         Questions for TA:
+        Does get inventory function have to be in same order as input_file
+        Is input-file or input_file (we are given _ but lab doc says -)
+        Do we need to add the .txt ending in the code or will files not be .txt
         What to output if set-mode u is called but we are already in UDP
         What do we do for exit in UDP/how do we find out all clients are done
         What do we output for wrong arguments in set-mode

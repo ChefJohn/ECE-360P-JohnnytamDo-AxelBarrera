@@ -23,7 +23,7 @@ public class LibUser {
         //if all checks out, then loan out the book to the respective user
         loanBookMap.put(loanID, bookName);
         bookCountMap.put(bookName, bookCountMap.get(bookName) - 1);
-        result = "Your request has been approved, " + loanID + " " + this.user + " " + bookName;
+        result = "Your request has been approved, " + loanID + " " + this.user + " " + bookName + "\n";
         return result;
     }
 
@@ -36,15 +36,16 @@ public class LibUser {
         String result = "";
 
         if (loanBookMap.get(loanID) == null){
-            result = loanID + " not found, no such borrow record";
+            result = loanID + " not found, no such borrow record\n";
             return result;
         }
 
         //if valid, then give the loan book back
-        loanBookMap.remove(loanID);
         String bookName = loanBookMap.get(loanID);
+        loanBookMap.remove(loanID);
+
         bookCountMap.put(bookName, bookCountMap.get(bookName) + 1);
-        result = loanID + " is returned";
+        result = loanID + " is returned\n";
         return result;
     }
 
@@ -56,7 +57,7 @@ public class LibUser {
         String result = "";
         //checking if the respective user has any loaned books
         if (loanBookMap.isEmpty()){
-            result = "No record found for " + this.user;
+            result = "No record found for " + this.user + "\n";
             return result;
         }
 

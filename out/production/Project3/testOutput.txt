@@ -1,0 +1,17 @@
+request approved 1 Mike TheLetter
+Request Failed
+req app 2 Lucy Divergent
+req app 3 gatsby
+req app 4 gatsby
+No record for Jack
+Mode to TCP
+Mode to UDP
+[Inventory]
+Mode to TCP
+Do not have book
+1 letter and 2 gatsby
+1 is returned
+Mode to UDP
+3 returned
+10 not found
+[Inventory]

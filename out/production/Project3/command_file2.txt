@@ -1,0 +1,20 @@
+begin-loan Mike "The Letter"
+begin-loan Jack "The Letter"
+begin-loan Lucy "Divergent"
+begin-loan Mike "The Great Gatsby"
+begin-loan Mike "The Great Gatsby"
+get-loans Jack
+set-mode t
+set-mode t
+set-mode u
+get-inventory
+set-mode u
+set-mode t
+begin-loan Mike "Dr. Seuss"
+get-loans Mike
+end-loan 1
+set-mode u
+end-loan 3
+end-loan 10
+get-inventory
+exit

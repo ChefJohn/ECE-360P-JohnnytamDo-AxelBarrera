@@ -65,12 +65,12 @@ public class TCPClientHandler implements Runnable {
                 }
                 //checking to see if requested book exists
                 if (bookCountMap.get(token[2]) == null){
-                    result = "Request Failed - We do not have this book";
+                    result = "Request Failed - We do not have this book\n";
                     return result;
                 }
                 //checking to see if requested book has avilability
                 if (bookCountMap.get(token[2]) == 0){
-                    result = "Request Failed - Book not available";
+                    result = "Request Failed - Book not available\n";
                     return result;
                 }
                 int loanID = server.getNewLoan();
