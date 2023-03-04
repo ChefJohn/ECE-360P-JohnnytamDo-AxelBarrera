@@ -7,6 +7,7 @@ import java.util.*;
 
 public class BookClient {
     public static void main(String[] args) throws Exception{
+        boolean mode = true;         //true == udp, false == tcp
         String hostAddress;
         int tcpPort;
         int udpPort;
@@ -14,6 +15,8 @@ public class BookClient {
         int loanID;             //keeps track of the amount of loans there are
         DatagramSocket socket = new DatagramSocket();
         InetAddress serverAddr = InetAddress.getByName("localhost");
+
+        Socket tcpSocket;           //socket for tcp
 
 
         if (args.length != 2) {
@@ -44,10 +47,13 @@ public class BookClient {
                 String arg1 = "";
                 String arg2 = "";
 
+                boolean switchModeFlag = false;         //this flags determines if we are switching modes or not
+
                 if (tokens[0].equals("set-mode")) {
                     // TODO: set the mode of communication for sending commands to the server
                     arg1 = tokens[1];
                     command = interpretCommand(0, arg1, arg2);
+                    switchModeFlag = true;
                 } else if (tokens[0].equals("begin-loan")) {
                     // TODO: send appropriate command to the server and display the
                     // appropriate responses form the server
@@ -76,6 +82,10 @@ public class BookClient {
                 }
 
                 sendUDP(command, udpPort, serverAddr, socket);
+                if (switchModeFlag){
+                    tcpSocket = new Socket("localhost", tcpPort);
+                    mode = false;
+                }
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -101,6 +111,7 @@ public class BookClient {
         return message;
     }
 
+    //function that sends a message to the server thru the UDP connection
     private static void sendUDP(String message, int port,
                                   InetAddress address,
                                   DatagramSocket socket)throws IOException{
@@ -109,11 +120,29 @@ public class BookClient {
         socket.send(pack);
     }
 
+    //function that receives a message from the server thru the UDP connection
     private static String receiveUDP(DatagramSocket socket) throws IOException{
         byte[] data = new byte[1024];
         DatagramPacket pack = new DatagramPacket(data,data.length);
         socket.receive(pack);
         String message = new String(pack.getData(),0,pack.getLength());
+        return message;
+    }
+
+    //function that sends a message to the server thru the TCP connection
+    private static void sendTCP(String message, int port, Socket socket)throws IOException{
+        OutputStream outputStream = socket.getOutputStream();
+        DataOutputStream out = new DataOutputStream(outputStream);
+
+        out.writeUTF(message);
+    }
+
+    //function that receives a message from the server thru the TCP connection
+    private static String receiveTCP(Socket socket) throws IOException{
+        InputStream inputStream = socket.getInputStream();
+        DataInputStream in = new DataInputStream(inputStream);
+        
+        String message = in.readUTF();
         return message;
     }
 
