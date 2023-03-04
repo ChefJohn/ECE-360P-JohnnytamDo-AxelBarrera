@@ -50,6 +50,7 @@ public class UDPClientHandler implements Runnable {
                 LibUser user;
                 if(!userClassMap.containsKey(token[1])){
                     user = new LibUser(token[1],bookCountMap);
+                    userClassMap.put(token[1],user);
                 }else{
                     user = userClassMap.get(token[1]);
                 }
@@ -65,6 +66,7 @@ public class UDPClientHandler implements Runnable {
                 }
                 int loanID = server.getNewLoan();
                 result = user.userBeginLoan(loanID,token[2]);
+                loanClassMap.put(loanID,user);
                 break;
             case "2":
                 // end loan
