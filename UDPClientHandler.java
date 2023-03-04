@@ -44,13 +44,19 @@ public class UDPClientHandler implements Runnable {
         }
     }
 
-    private String executeCommand(String[] token){
+    private String executeCommand(String[] token)throws Exception{
         //TODO: Does the bulk of the work, handling all the commands
         String result = "";
         LibUser user;
         switch (token[0]){
             case "0":
                 //set mode
+                if(token[1].equals("t")){
+                    sendClientToTCP();
+                    result = "The communication mode is set to TCP\n";
+                }else{
+                    result = "NONE";
+                }
                 break;
             case "1":
                 //begin loan

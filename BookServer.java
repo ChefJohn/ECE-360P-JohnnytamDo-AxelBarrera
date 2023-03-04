@@ -65,6 +65,14 @@ public class BookServer {
         Thread t = new Thread(o);
         t.start();
         t.join();
+
+        /*
+        Questions for TA:
+        What to output if set-mode u is called but we are already in UDP
+        What do we do for exit in UDP/how do we find out all clients are done
+        What do we output for wrong arguments in set-mode
+        Are arguments Case-sensitive
+         */
     }
 
     public int getNewLoan(){
