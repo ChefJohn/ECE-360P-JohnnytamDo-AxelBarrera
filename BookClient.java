@@ -153,6 +153,7 @@ public class BookClient {
     }
 
     private static void writeToOut(String output, BufferedWriter f){
+
     }
 
 }
