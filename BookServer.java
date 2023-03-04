@@ -16,6 +16,8 @@ public class BookServer {
         udpPort = 8000;
 
         HashMap<String, Integer> bookCountMap = new HashMap<>();
+        HashMap<String,LibUser> userClassMap = new HashMap<>();
+        HashMap<String,LibUser> loanClassMap = new HashMap<>();
 
         // parse the inventory file
         File file = new File("/Users/johnnydo/Documents/School/Concurrent/Project3/ECE-360P-JohnnytamDo-AxelBarrera/input_file.txt");

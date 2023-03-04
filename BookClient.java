@@ -13,6 +13,7 @@ public class BookClient {
         int udpPort;
         int clientId;
 
+
         if (args.length != 2) {
             System.out.println("ERROR: Provide 2 arguments: command-file, clientId");
             System.out.println("\t(1) command-file: file with commands to the server");
@@ -61,7 +62,7 @@ public class BookClient {
     public static void sendUDP(String message, int port,
                                   InetAddress address,
                                   DatagramSocket socket){
-        //TODO: Send UDP message following the protocol
+
     }
 
     public static String receiveUDP(DatagramSocket socket){
