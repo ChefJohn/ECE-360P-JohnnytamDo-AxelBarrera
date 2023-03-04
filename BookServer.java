@@ -54,12 +54,6 @@ public class BookServer {
             System.out.println("File not found!");
         }
 
-        //TESTING PARSING
-        for (Map.Entry<String,Integer> mapElement : bookCountMap.entrySet()) {
-            System.out.println(mapElement.getKey());
-            System.out.println(mapElement.getValue());
-        }
-
         // TODO: handle request from clients
         UDPClientHandler o = new UDPClientHandler(bookCountMap,udpss,server,tcpss);
         Thread t = new Thread(o);
