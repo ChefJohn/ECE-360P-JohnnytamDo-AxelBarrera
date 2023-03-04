@@ -12,9 +12,11 @@ public class BookClient {
         int udpPort;
         int clientId;
         int loanID;             //keeps track of the amount of loans there are
+        DatagramSocket socket = null;
+        InetAddress serverAddr = null;
         try{
-            DatagramSocket socket = new DatagramSocket();
-            InetAddress serverAddr = InetAddress.getByName("localhost");
+            socket = new DatagramSocket();
+            serverAddr = InetAddress.getByName("localhost");
         }catch (SocketException e){System.out.println(e);}
         catch (UnknownHostException e){System.out.println(e);}
 
@@ -42,6 +44,7 @@ public class BookClient {
                 String cmd = sc.nextLine();
                 String[] tokens = cmd.split(" ");
 
+                String command = "";
                 int commandID;
                 String arg1 = "";
                 String arg2 = "";
@@ -49,33 +52,35 @@ public class BookClient {
                 if (tokens[0].equals("set-mode")) {
                     // TODO: set the mode of communication for sending commands to the server
                     arg1 = tokens[1];
-                    interpretCommand(0, arg1, arg2);
+                    command = interpretCommand(0, arg1, arg2);
                 } else if (tokens[0].equals("begin-loan")) {
                     // TODO: send appropriate command to the server and display the
                     // appropriate responses form the server
                     arg1 = tokens[1];
                     arg2 = tokens[2];
-                    interpretCommand(1, arg1, arg2);
+                    command = interpretCommand(1, arg1, arg2);
                 } else if (tokens[0].equals("end-loan")) {
                     // TODO: send appropriate command to the server and display the
                     // appropriate responses form the server
                     arg1 = tokens[1];
-                    interpretCommand(2, arg1, arg2);
+                    command = interpretCommand(2, arg1, arg2);
                 } else if (tokens[0].equals("get-loans")) {
                     // TODO: send appropriate command to the server and display the
                     // appropriate responses form the server
                     arg1 = tokens[1];
-                    interpretCommand(3, arg1, arg2);
+                    command = interpretCommand(3, arg1, arg2);
                 } else if (tokens[0].equals("get-inventory")) {
                     // TODO: send appropriate command to the server and display the
                     // appropriate responses form the server
-                    interpretCommand(4, arg1, arg2);
+                    command = interpretCommand(4, arg1, arg2);
                 } else if (tokens[0].equals("exit")) {
                     // TODO: send appropriate command to the server
-                    interpretCommand(5, arg1, arg2);
+                    command = interpretCommand(5, arg1, arg2);
                 } else {
                     System.out.println("ERROR: No such command");
                 }
+
+                sendUDP(command, udpPort, serverAddr, socket);
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
