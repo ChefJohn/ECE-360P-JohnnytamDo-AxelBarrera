@@ -13,23 +13,14 @@ public class LibUser {
     }
 
     public String userBeginLoan(int loanID, String bookName){
-        /*TODO: fulfills the begin-loan command. If the request is valid, then this function will map the loan id with
-        the book name to the respective user
+        /*TODO: fulfills the begin-loan command. If the request is valid,
+            then this function will map the loan id with
+            the book name to the respective user
         */
 
         String result = "";
 
-        //checking to see if requested book exists
-        if (bookCountMap.get(bookName) == null){
-            result = "Request Failed - We do not have this book";
-            return result;
-        }
 
-        //checking to see if requested book has avilability 
-        if (bookCountMap.get(bookName) == 0){
-            result = "Request Failed - Book not available";
-            return result;
-        }
 
         //if all checks out, then loan out the book to the respective user
         loanBookMap.put(loanID, bookName);
@@ -39,8 +30,9 @@ public class LibUser {
     }
 
     public String userEndLoan(int loanID){
-        /*TODO: fulfills the end-loan command. If the requests is valid, then this function will unmap the loan id and 
-        the book associated with it from the respective user
+        /*TODO: fulfills the end-loan command. If the requests is valid,
+            then this function will unmap the loan id and
+            the book associated with it from the respective user
         */
 
         String result = "";
