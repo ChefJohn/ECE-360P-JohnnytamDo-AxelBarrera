@@ -16,7 +16,7 @@ public class BookClient {
         DatagramSocket socket = new DatagramSocket();
         InetAddress serverAddr = InetAddress.getByName("localhost");
 
-        Socket tcpSocket;           //socket for tcp
+        Socket tcpSocket = null;           //socket for tcp
 
 
         if (args.length != 2) {
@@ -80,11 +80,17 @@ public class BookClient {
                 } else {
                     System.out.println("ERROR: No such command");
                 }
-
-                sendUDP(command, udpPort, serverAddr, socket);
-                if (switchModeFlag){
-                    tcpSocket = new Socket("localhost", tcpPort);
-                    mode = false;
+                if (mode){
+                    sendUDP(command, udpPort, serverAddr, socket);
+                
+                    if (switchModeFlag){
+                        tcpSocket = new Socket("localhost", tcpPort);
+                        System.out.println("The communication mode is set to TCP");
+                        mode = false;
+                    }
+                } else {
+                    sendTCP(command, tcpPort, tcpSocket);
+                    receiveTCP(tcpSocket);
                 }
             }
         } catch (FileNotFoundException e) {
