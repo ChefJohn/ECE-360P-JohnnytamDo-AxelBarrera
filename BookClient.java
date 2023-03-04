@@ -146,4 +146,7 @@ public class BookClient {
         return message;
     }
 
+    private static void writeToOut(String output, BufferedWriter f){
+    }
+
 }
