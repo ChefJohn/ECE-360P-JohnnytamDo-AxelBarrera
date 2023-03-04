@@ -1,7 +1,5 @@
 import java.io.IOException;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.InetAddress;
+import java.net.*;
 import java.util.HashMap;
 
 public class UDPClientHandler implements Runnable {
@@ -9,18 +7,19 @@ public class UDPClientHandler implements Runnable {
     HashMap<String,LibUser> userClassMap;
     HashMap<Integer,LibUser> loanClassMap;
     DatagramSocket socket;
+    ServerSocket tcpsocket;
     BookServer server;
 
     public UDPClientHandler(HashMap<String, Integer> bookCountMap,
-                            HashMap<String, LibUser> userClassMap,
-                            HashMap<Integer, LibUser> loanClassMap,
                             DatagramSocket socket,
-                            BookServer server) {
+                            BookServer server,
+                            ServerSocket tcpsocket) {
         this.bookCountMap = bookCountMap;
-        this.userClassMap = userClassMap;
-        this.loanClassMap = loanClassMap;
+        this.userClassMap = new HashMap<>();
+        this.loanClassMap = new HashMap<>();
         this.socket = socket;
         this.server = server;
+        this.tcpsocket = tcpsocket;
     }
 
 
@@ -91,8 +90,12 @@ public class UDPClientHandler implements Runnable {
         return answer;
     }
 
-    private void sendClientToTCP(){
-        //TODO: When set-mode t command comes this should execute the neccesary server changes
+    private void sendClientToTCP() throws Exception{
+        Socket c = tcpsocket.accept();
+        TCPClientHandler o = new TCPClientHandler(
+                bookCountMap,userClassMap,loanClassMap,c,server);
+        Thread t = new Thread(o);
+        t.start();
     }
 
     private void sendUDP(String message,

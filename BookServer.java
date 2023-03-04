@@ -1,4 +1,6 @@
 import java.io.*;
+import java.net.DatagramSocket;
+import java.net.ServerSocket;
 import java.util.*;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -12,7 +14,7 @@ public class BookServer {
         this.loanID = 1;
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         int tcpPort;
         int udpPort;
         // if (args.length != 1) {
@@ -22,11 +24,16 @@ public class BookServer {
         //String fileName = args[0];
         tcpPort = 7000;
         udpPort = 8000;
-
+        /**
+         * Initialize HashMaps
+         */
         HashMap<String, Integer> bookCountMap = new HashMap<>();
-        HashMap<String,LibUser> userClassMap = new HashMap<>();
-        HashMap<Integer,LibUser> loanClassMap = new HashMap<>();
 
+        /**
+         * Initialize Server Sockets
+         */
+        DatagramSocket udpss = new DatagramSocket(udpPort);
+        ServerSocket tcpss = new ServerSocket(tcpPort);
         BookServer server = new BookServer();
 
         // parse the inventory file (also change this to the filename variable when done testing)
@@ -54,7 +61,10 @@ public class BookServer {
         }
 
         // TODO: handle request from clients
-
+        UDPClientHandler o = new UDPClientHandler(bookCountMap,udpss,server,tcpss);
+        Thread t = new Thread(o);
+        t.start();
+        t.join();
     }
 
     public int getNewLoan(){
