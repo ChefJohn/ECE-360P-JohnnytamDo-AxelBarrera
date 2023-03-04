@@ -17,7 +17,7 @@ public class BookServer {
 
         HashMap<String, Integer> bookCountMap = new HashMap<>();
 
-        // parse the inventory file
+        // parse the inventory file (also change this to the filename variable when done testing)
         File file = new File("/Users/johnnydo/Documents/School/Concurrent/Project3/ECE-360P-JohnnytamDo-AxelBarrera/input_file.txt");
 
         try {
