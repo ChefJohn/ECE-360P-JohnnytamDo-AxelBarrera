@@ -1,6 +1,13 @@
 import java.io.IOException;
+
 import java.net.*;
 import java.util.HashMap;
+
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
+import java.util.*;
+
 
 public class UDPClientHandler implements Runnable {
     HashMap<String,Integer> bookCountMap;
@@ -40,13 +47,13 @@ public class UDPClientHandler implements Runnable {
     private String executeCommand(String[] token){
         //TODO: Does the bulk of the work, handling all the commands
         String result = "";
+        LibUser user;
         switch (token[0]){
             case "0":
                 //set mode
                 break;
             case "1":
                 //begin loan
-                LibUser user;
                 if(!userClassMap.containsKey(token[1])){
                     user = new LibUser(token[1],bookCountMap);
                     userClassMap.put(token[1],user);
@@ -69,12 +76,31 @@ public class UDPClientHandler implements Runnable {
                 break;
             case "2":
                 // end loan
+                int endLoanID = Integer.parseInt(token[1]);
+                user = loanClassMap.get(endLoanID);
+
+                if (user == null){
+                    user = new LibUser(null, bookCountMap);
+                }
+
+                result = user.userEndLoan(endLoanID);
                 break;
             case "3":
                 // get loans
+                String username = token[1];
+                user = userClassMap.get(username);
+
+                if (user == null){
+                    user = new LibUser(null, bookCountMap);
+                }
+
+                result = user.userGetLoan();
                 break;
             case "4":
                 // get inventory
+                for (Map.Entry<String,Integer> mapElement : bookCountMap.entrySet()) {
+                    result +=  mapElement.getKey() + " " + mapElement.getValue() + "\n";
+                }
                 break;
             case "5":
                 // exit
