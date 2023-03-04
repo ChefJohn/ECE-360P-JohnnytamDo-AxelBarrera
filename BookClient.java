@@ -12,13 +12,8 @@ public class BookClient {
         int udpPort;
         int clientId;
         int loanID;             //keeps track of the amount of loans there are
-        DatagramSocket socket = null;
-        InetAddress serverAddr = null;
-        try{
-            socket = new DatagramSocket();
-            serverAddr = InetAddress.getByName("localhost");
-        }catch (SocketException e){System.out.println(e);}
-        catch (UnknownHostException e){System.out.println(e);}
+        DatagramSocket socket = new DatagramSocket();
+        InetAddress serverAddr = InetAddress.getByName("localhost");
 
 
         if (args.length != 2) {
