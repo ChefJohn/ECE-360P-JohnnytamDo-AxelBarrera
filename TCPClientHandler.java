@@ -1,6 +1,4 @@
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.Socket;
 import java.util.HashMap;
 import java.util.Map;
@@ -110,6 +108,7 @@ public class TCPClientHandler implements Runnable {
             case "5":
                 // exit
                 exit=true;
+                printInventory();
                 result = "NONE";
                 break;
         }
@@ -130,5 +129,16 @@ public class TCPClientHandler implements Runnable {
     private String receiveTCP() throws IOException{
         String message = inm.readUTF();
         return message;
+    }
+
+    private void printInventory()throws Exception{
+        String result = "";
+        for (Map.Entry<String,Integer> mapElement : bookCountMap.entrySet()) {
+            result +=  mapElement.getKey() + " " + mapElement.getValue() + "\n";
+        }
+        FileWriter fileWriter = new FileWriter("inventory.txt");
+        BufferedWriter file = new BufferedWriter(fileWriter);
+        file.write(result);
+        file.close();
     }
 }

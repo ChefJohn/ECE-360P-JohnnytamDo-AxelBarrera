@@ -1,3 +1,5 @@
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.IOException;
 
 import java.net.*;
@@ -110,6 +112,7 @@ public class UDPClientHandler implements Runnable {
                 break;
             case "5":
                 // exit
+                printInventory();
                 break;
         }
         return result;
@@ -122,11 +125,15 @@ public class UDPClientHandler implements Runnable {
         return answer;
     }
 
-    private void printInventory(){
+    private void printInventory()throws Exception{
         String result = "";
         for (Map.Entry<String,Integer> mapElement : bookCountMap.entrySet()) {
             result +=  mapElement.getKey() + " " + mapElement.getValue() + "\n";
         }
+        FileWriter fileWriter = new FileWriter("inventory.txt");
+        BufferedWriter file = new BufferedWriter(fileWriter);
+        file.write(result);
+        file.close();
     }
 
     private void sendClientToTCP() throws Exception{
