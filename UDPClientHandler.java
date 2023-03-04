@@ -7,34 +7,87 @@ import java.util.HashMap;
 public class UDPClientHandler implements Runnable {
     HashMap<String,Integer> bookCountMap;
     HashMap<String,LibUser> userClassMap;
-    HashMap<String,LibUser> loanClassMap;
+    HashMap<Integer,LibUser> loanClassMap;
     DatagramSocket socket;
+    BookServer server;
 
     public UDPClientHandler(HashMap<String, Integer> bookCountMap,
                             HashMap<String, LibUser> userClassMap,
-                            HashMap<String, LibUser> loanClassMap,
-                            DatagramSocket socket) {
+                            HashMap<Integer, LibUser> loanClassMap,
+                            DatagramSocket socket,
+                            BookServer server) {
         this.bookCountMap = bookCountMap;
         this.userClassMap = userClassMap;
         this.loanClassMap = loanClassMap;
         this.socket = socket;
+        this.server = server;
     }
 
 
     @Override
     public void run() {
         //TODO: Handles UDP Messages and executes necessary commands
+        while(true){
+            try {
+                DatagramPacket pack = receiveUDP(socket);
+                String message = extractMessage(pack);
+                String[] tokens = tokenizeMessage(message);
+                String response = executeCommand(tokens);
+                sendUDP(response,pack,socket);
+            }catch (Exception e){System.out.println(e);}
+        }
     }
 
-    private void executeCommand(String[] token){
+    private String executeCommand(String[] token){
         //TODO: Does the bulk of the work, handling all the commands
+        String result = "";
+        switch (token[0]){
+            case "0":
+                //set mode
+                break;
+            case "1":
+                //begin loan
+                LibUser user;
+                if(!userClassMap.containsKey(token[1])){
+                    user = new LibUser(token[1],bookCountMap);
+                    userClassMap.put(token[1],user);
+                }else{
+                    user = userClassMap.get(token[1]);
+                }
+                //checking to see if requested book exists
+                if (bookCountMap.get(token[2]) == null){
+                    result = "Request Failed - We do not have this book";
+                    return result;
+                }
+                //checking to see if requested book has avilability
+                if (bookCountMap.get(token[2]) == 0){
+                    result = "Request Failed - Book not available";
+                    return result;
+                }
+                int loanID = server.getNewLoan();
+                result = user.userBeginLoan(loanID,token[2]);
+                loanClassMap.put(loanID,user);
+                break;
+            case "2":
+                // end loan
+                break;
+            case "3":
+                // get loans
+                break;
+            case "4":
+                // get inventory
+                break;
+            case "5":
+                // exit
+                break;
+        }
+        return result;
     }
 
-    private String[] tokenizeMessage(){
+    private String[] tokenizeMessage(String message){
         //TODO: Splits the message, 0th indx = command,
         // 1st indx = 1st parameter, 2nd indx = 2nd parameter
-        String[] answer = new String[3];
-
+        String[] answer = message.split("\\|");
         return answer;
     }
 

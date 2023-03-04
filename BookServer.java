@@ -1,9 +1,17 @@
 import java.io.*;
 import java.util.*;
+import java.util.concurrent.locks.ReentrantLock;
 
 //IMPORTANT NOTE: UNCOMMENT OUT THE ARGS SHIT WHEN DONE TESTING
 
 public class BookServer {
+    int loanID;
+    ReentrantLock loanLock = new ReentrantLock();
+
+    public BookServer() {
+        this.loanID = 1;
+    }
+
     public static void main(String[] args) {
         int tcpPort;
         int udpPort;
@@ -17,7 +25,9 @@ public class BookServer {
 
         HashMap<String, Integer> bookCountMap = new HashMap<>();
         HashMap<String,LibUser> userClassMap = new HashMap<>();
-        HashMap<String,LibUser> loanClassMap = new HashMap<>();
+        HashMap<Integer,LibUser> loanClassMap = new HashMap<>();
+
+        BookServer server = new BookServer();
 
         // parse the inventory file (also change this to the filename variable when done testing)
         File file = new File("/Users/johnnydo/Documents/School/Concurrent/Project3/ECE-360P-JohnnytamDo-AxelBarrera/input_file.txt");
@@ -44,5 +54,14 @@ public class BookServer {
         }
 
         // TODO: handle request from clients
+
+    }
+
+    public int getNewLoan(){
+        loanLock.lock();
+        int answer = loanID;
+        loanID+=1;
+        loanLock.unlock();
+        return answer;
     }
 }
