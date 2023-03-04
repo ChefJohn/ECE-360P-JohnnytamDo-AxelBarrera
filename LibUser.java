@@ -50,29 +50,24 @@ public class LibUser {
         return result;
     }
 
-    public String[] userGetLoan(){
+    public String userGetLoan(){
         /*TODO: fulfills the get-loan command. If the requests is valid, then this function will just return all the loans
         that is associated with the respective user. If not, then just simply return ‘No record found for <user-name>’
         */
 
+        String result = "";
         //checking if the respective user has any loaned books
         if (loanBookMap.isEmpty()){
-            String result = "No record found for " + this.user;
-            String[] resultArr = new String[1];
-            resultArr[0] = result;
-            return resultArr;
+            result = "No record found for " + this.user;
+            return result;
         }
 
         //if valid then return array of all loans
-        String[] resultArr = new String[loanBookMap.size()];
-        int i = 0;
         for (Map.Entry<Integer,String> mapElement : loanBookMap.entrySet()) {
-            String result =  mapElement.getKey() + " " + mapElement.getValue();
-            resultArr[i] = result;
-            i++;
+            result +=  mapElement.getKey() + " " + mapElement.getValue() + "\n";
         }
 
-        return resultArr;
+        return result;
     }
 
 }
