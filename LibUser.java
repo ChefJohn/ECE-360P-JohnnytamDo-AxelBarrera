@@ -20,8 +20,6 @@ public class LibUser {
 
         String result = "";
 
-
-
         //if all checks out, then loan out the book to the respective user
         loanBookMap.put(loanID, bookName);
         bookCountMap.put(bookName, bookCountMap.get(bookName) - 1);
