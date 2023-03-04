@@ -1,5 +1,3 @@
-import com.sun.xml.internal.bind.v2.TODO;
-
 import java.net.*;
 import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
@@ -12,6 +10,7 @@ public class BookClient {
         int tcpPort;
         int udpPort;
         int clientId;
+        int loanID;             //keeps track of the amount of loans there are
         try{
             DatagramSocket socket = new DatagramSocket();
             InetAddress serverAddr = InetAddress.getByName("localhost");
@@ -31,6 +30,7 @@ public class BookClient {
         hostAddress = "localhost";
         tcpPort = 7000;// hardcoded -- must match the server's tcp port
         udpPort = 8000;// hardcoded -- must match the server's udp port
+        loanID = 1;
 
         try {
             Scanner sc = new Scanner(new FileReader(commandFile));
@@ -44,6 +44,7 @@ public class BookClient {
                 } else if (tokens[0].equals("begin-loan")) {
                     // TODO: send appropriate command to the server and display the
                     // appropriate responses form the server
+
                 } else if (tokens[0].equals("end-loan")) {
                     // TODO: send appropriate command to the server and display the
                     // appropriate responses form the server
