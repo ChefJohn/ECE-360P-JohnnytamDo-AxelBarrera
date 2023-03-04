@@ -85,7 +85,7 @@ public class TCPClientHandler implements Runnable {
                 user = loanClassMap.get(endLoanID);
 
                 if (user == null){
-                    user = new LibUser(null, bookCountMap);
+                    user = new LibUser(token[1], bookCountMap);
                 }
 
                 result = user.userEndLoan(endLoanID);
@@ -96,7 +96,7 @@ public class TCPClientHandler implements Runnable {
                 user = userClassMap.get(username);
 
                 if (user == null){
-                    user = new LibUser(null, bookCountMap);
+                    user = new LibUser(token[1], bookCountMap);
                 }
 
                 result = user.userGetLoan();

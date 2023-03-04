@@ -86,7 +86,7 @@ public class UDPClientHandler implements Runnable {
                 user = loanClassMap.get(endLoanID);
 
                 if (user == null){
-                    user = new LibUser(null, bookCountMap);
+                    user = new LibUser(token[1], bookCountMap);
                 }
 
                 result = user.userEndLoan(endLoanID);
@@ -97,7 +97,7 @@ public class UDPClientHandler implements Runnable {
                 user = userClassMap.get(username);
 
                 if (user == null){
-                    user = new LibUser(null, bookCountMap);
+                    user = new LibUser(token[1], bookCountMap);
                 }
 
                 result = user.userGetLoan();
@@ -120,6 +120,13 @@ public class UDPClientHandler implements Runnable {
         // 1st indx = 1st parameter, 2nd indx = 2nd parameter
         String[] answer = message.split("\\|");
         return answer;
+    }
+
+    private void printInventory(){
+        String result = "";
+        for (Map.Entry<String,Integer> mapElement : bookCountMap.entrySet()) {
+            result +=  mapElement.getKey() + " " + mapElement.getValue() + "\n";
+        }
     }
 
     private void sendClientToTCP() throws Exception{

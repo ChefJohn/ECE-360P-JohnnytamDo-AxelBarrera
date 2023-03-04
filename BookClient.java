@@ -1,5 +1,4 @@
 
-import com.sun.org.apache.xml.internal.resolver.readers.ExtendedXMLCatalogReader;
 
 import java.net.*;
 import java.nio.charset.StandardCharsets;
@@ -55,7 +54,8 @@ public class BookClient {
                     // TODO: set the mode of communication for sending commands to the server
                     arg1 = tokens[1];
                     command = interpretCommand(0, arg1, arg2);
-                    switchModeFlag = true;
+                    if ((mode && tokens[1].equals("t")) || (!mode && tokens[1].equals("u"))) switchModeFlag = true;
+
                 } else if (tokens[0].equals("begin-loan")) {
                     // TODO: send appropriate command to the server and display the
                     // appropriate responses form the server
@@ -82,18 +82,30 @@ public class BookClient {
                 } else {
                     System.out.println("ERROR: No such command");
                 }
+
+                String serverResponse = "";
                 if (mode){
                     sendUDP(command, udpPort, serverAddr, socket);
                 
                     if (switchModeFlag){
                         tcpSocket = new Socket("localhost", tcpPort);
-                        System.out.println("The communication mode is set to TCP");
                         mode = false;
+                        switchModeFlag = false;
                     }
+
+                    serverResponse = receiveUDP(socket);
+                    
                 } else {
                     sendTCP(command, tcpPort, tcpSocket);
-                    receiveTCP(tcpSocket);
+                    serverResponse = receiveTCP(tcpSocket);
+
+                    if (switchModeFlag){
+                        tcpSocket.close();
+                        mode = true;
+                        switchModeFlag = false;
+                    }
                 }
+                writeToOut(serverResponse, file);
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();

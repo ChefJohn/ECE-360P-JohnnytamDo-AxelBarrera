@@ -66,6 +66,7 @@ public class BookServer {
         What do we do for exit in UDP/how do we find out all clients are done
         What do we output for wrong arguments in set-mode
         Are arguments Case-sensitive
+        Safe to assume that client will always have exit as its last command (It wont be in the middle or not at all there?)
          */
     }
 
