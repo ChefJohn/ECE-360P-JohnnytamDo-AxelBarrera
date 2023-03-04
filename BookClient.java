@@ -1,4 +1,6 @@
 
+import com.sun.org.apache.xml.internal.resolver.readers.ExtendedXMLCatalogReader;
+
 import java.net.*;
 import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
@@ -146,7 +148,10 @@ public class BookClient {
         return message;
     }
 
-    private static void writeToOut(String output, BufferedWriter f){
+    private static void writeToOut(String output, BufferedWriter f)throws Exception {
+        if(!output.equals("NONE")){
+            f.write(output);
+        }
     }
 
 }
