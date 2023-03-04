@@ -5,7 +5,7 @@ import java.io.*;
 import java.util.*;
 
 public class BookClient {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception{
         String hostAddress;
         int tcpPort;
         int udpPort;
@@ -30,7 +30,9 @@ public class BookClient {
         hostAddress = "localhost";
         tcpPort = 7000;// hardcoded -- must match the server's tcp port
         udpPort = 8000;// hardcoded -- must match the server's udp port
-        loanID = 1;
+        String fileName = new String("out_" + Integer.toString(clientId));
+        FileWriter fileWriter = new FileWriter(fileName+".txt");
+        BufferedWriter file = new BufferedWriter(fileWriter);
 
         try {
             Scanner sc = new Scanner(new FileReader(commandFile));
