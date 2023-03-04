@@ -1,7 +1,7 @@
 import com.sun.xml.internal.bind.v2.TODO;
 
-import java.net.DatagramSocket;
-import java.net.InetAddress;
+import java.net.*;
+import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 import java.io.*;
 import java.util.*;
@@ -12,6 +12,11 @@ public class BookClient {
         int tcpPort;
         int udpPort;
         int clientId;
+        try{
+            DatagramSocket socket = new DatagramSocket();
+            InetAddress serverAddr = InetAddress.getByName("localhost");
+        }catch (SocketException e){System.out.println(e);}
+        catch (UnknownHostException e){System.out.println(e);}
 
 
         if (args.length != 2) {
@@ -59,15 +64,20 @@ public class BookClient {
         }
     }
 
-    public static void sendUDP(String message, int port,
+    private static void sendUDP(String message, int port,
                                   InetAddress address,
-                                  DatagramSocket socket){
-
+                                  DatagramSocket socket)throws IOException{
+        byte[] data = message.getBytes();
+        DatagramPacket pack = new DatagramPacket(data,data.length, address, port);
+        socket.send(pack);
     }
 
-    public static String receiveUDP(DatagramSocket socket){
-        //TODO: receive UDP message and return the String
-        return "";
+    private static String receiveUDP(DatagramSocket socket) throws IOException{
+        byte[] data = new byte[1024];
+        DatagramPacket pack = new DatagramPacket(data,data.length);
+        socket.receive(pack);
+        String message = new String(pack.getData(),0,pack.getLength());
+        return message;
     }
 
 }

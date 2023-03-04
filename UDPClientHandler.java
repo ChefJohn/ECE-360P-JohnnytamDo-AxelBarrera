@@ -1,16 +1,21 @@
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
 import java.util.HashMap;
 
 public class UDPClientHandler implements Runnable {
     HashMap<String,Integer> bookCountMap;
     HashMap<String,LibUser> userClassMap;
     HashMap<String,LibUser> loanClassMap;
+    DatagramSocket socket;
 
     public UDPClientHandler(HashMap<String, Integer> bookCountMap,
                             HashMap<String, LibUser> userClassMap,
-                            HashMap<String, LibUser> loanClassMap) {
+                            HashMap<String, LibUser> loanClassMap,
+                            DatagramSocket socket) {
         this.bookCountMap = bookCountMap;
         this.userClassMap = userClassMap;
         this.loanClassMap = loanClassMap;
+        this.socket = socket;
     }
 
 
