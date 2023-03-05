@@ -4,7 +4,6 @@ import java.net.ServerSocket;
 import java.util.*;
 import java.util.concurrent.locks.ReentrantLock;
 
-//IMPORTANT NOTE: UNCOMMENT OUT THE ARGS SHIT WHEN DONE TESTING
 
 public class BookServer {
     int loanID;

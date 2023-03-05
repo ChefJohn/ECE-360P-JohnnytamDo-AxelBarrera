@@ -1,10 +1,12 @@
 The communication mode is set to TCP
-Your request has been approved, 1 Mike "The Letter"
+Your request has been approved, 7 Mike "The Letter"
 Request Failed - Book not available
-Your request has been approved, 2 Lucy "Divergent"
-1 "The Letter"
-1 is returned
-"The Letter" 1
+Your request has been approved, 8 Lucy "Divergent"
+5 "The Great Gatsby"
+6 "The Great Gatsby"
+7 "The Letter"
+1 not found, no such borrow record
+"The Letter" 0
 "The Count of Monte Cristo" 17
-"The Great Gatsby" 15
-"Divergent" 9
+"The Great Gatsby" 13
+"Divergent" 7
