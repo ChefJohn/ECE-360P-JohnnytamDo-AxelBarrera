@@ -26,7 +26,8 @@ public class BookServer {
         /**
          * Initialize HashMaps
          */
-        HashMap<String, Integer> bookCountMap = new HashMap<>();
+        HashMap<String, InventoryList> bookCountMap = new HashMap<>();
+        InventoryList head = null;
 
         /**
          * Initialize Server Sockets
@@ -45,9 +46,18 @@ public class BookServer {
             Scanner sc = new Scanner(file);
 
             //for each line, map the number of books to corresponding book name
+            String[] line = sc.nextLine().split("\" ");
+            line[0]+="\"";
+            head = new InventoryList(line[0],Integer.parseInt(line[1]));
+            InventoryList prevN = head;
+            bookCountMap.put(line[0],prevN);
             while(sc.hasNextLine()){
-                String[] line = sc.nextLine().split("\" ");
-                bookCountMap.put(line[0] + "\"", Integer.parseInt(line[1]));
+                line = sc.nextLine().split("\" ");
+                line[0]+="\"";
+                InventoryList currN = new InventoryList(line[0],Integer.parseInt(line[1]));
+                bookCountMap.put(line[0],currN);
+                prevN.addNext(currN);
+                prevN = currN;
             }
 
             sc.close();
@@ -58,7 +68,7 @@ public class BookServer {
         } 
 
         // TODO: handle request from clients
-        UDPClientHandler o = new UDPClientHandler(bookCountMap,udpss,server,tcpss);
+        UDPClientHandler o = new UDPClientHandler(bookCountMap,udpss,server,tcpss,head);
         Thread t = new Thread(o);
         t.start();
         t.join();

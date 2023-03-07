@@ -12,23 +12,26 @@ import java.util.*;
 
 
 public class UDPClientHandler implements Runnable {
-    HashMap<String,Integer> bookCountMap;
+    HashMap<String,InventoryList> bookCountMap;
     HashMap<String,LibUser> userClassMap;
     HashMap<Integer,LibUser> loanClassMap;
     DatagramSocket socket;
     ServerSocket tcpsocket;
     BookServer server;
+    InventoryList head;
 
-    public UDPClientHandler(HashMap<String, Integer> bookCountMap,
+    public UDPClientHandler(HashMap<String, InventoryList> bookCountMap,
                             DatagramSocket socket,
                             BookServer server,
-                            ServerSocket tcpsocket) {
+                            ServerSocket tcpsocket,
+                            InventoryList head) {
         this.bookCountMap = bookCountMap;
         this.userClassMap = new HashMap<>();
         this.loanClassMap = new HashMap<>();
         this.socket = socket;
         this.server = server;
         this.tcpsocket = tcpsocket;
+        this.head = head;
     }
 
 
@@ -76,7 +79,7 @@ public class UDPClientHandler implements Runnable {
                     return result;
                 }
                 //checking to see if requested book has avilability
-                if (bookCountMap.get(token[2]) == 0){
+                if (!bookCountMap.get(token[2]).isAvailable()){
                     result = "Request Failed - Book not available\n";
                     return result;
                 }
@@ -108,13 +111,11 @@ public class UDPClientHandler implements Runnable {
                 break;
             case "4":
                 // get inventory
-                for (Map.Entry<String,Integer> mapElement : bookCountMap.entrySet()) {
-                    result +=  mapElement.getKey() + " " + mapElement.getValue() + "\n";
-                }
+                result = writeInventory(head);
                 break;
             case "5":
                 // exit
-                printInventory();
+                printInventory(head);
                 result="NONE";
                 break;
         }
@@ -128,11 +129,9 @@ public class UDPClientHandler implements Runnable {
         return answer;
     }
 
-    private void printInventory()throws Exception{
+    private void printInventory(InventoryList head)throws Exception{
         String result = "";
-        for (Map.Entry<String,Integer> mapElement : bookCountMap.entrySet()) {
-            result +=  mapElement.getKey() + " " + mapElement.getValue() + "\n";
-        }
+        result = writeInventory(head);
         FileWriter fileWriter = new FileWriter("inventory.txt");
         BufferedWriter file = new BufferedWriter(fileWriter);
         file.write(result);
@@ -142,7 +141,7 @@ public class UDPClientHandler implements Runnable {
     private void sendClientToTCP() throws Exception{
         Socket c = tcpsocket.accept();
         TCPClientHandler o = new TCPClientHandler(
-                bookCountMap,userClassMap,loanClassMap,c,server);
+                bookCountMap,userClassMap,loanClassMap,c,server,head);
         Thread t = new Thread(o);
         t.start();
     }
@@ -167,5 +166,14 @@ public class UDPClientHandler implements Runnable {
         DatagramPacket pack = new DatagramPacket(data,data.length);
         socket.receive(pack);
         return pack;
+    }
+
+    private String writeInventory(InventoryList head){
+        String result = "";
+        while(head!=null){
+            result+=head.toString();
+            head = head.next;
+        }
+        return result;
     }
 }

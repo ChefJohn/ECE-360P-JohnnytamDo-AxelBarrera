@@ -3,10 +3,10 @@ import java.util.*;
 
 public class LibUser {
     private String user;
-    private HashMap<String,Integer> bookCountMap;       //book name: # of books available
+    private HashMap<String,InventoryList> bookCountMap;       //book name: # of books available
     private HashMap<Integer,String> loanBookMap;        //loanID: book name
 
-    public LibUser(String user, HashMap<String, Integer> bookCountMap) {
+    public LibUser(String user, HashMap<String, InventoryList> bookCountMap) {
         this.user = user;
         this.bookCountMap = bookCountMap;
         this.loanBookMap = new HashMap<>();
@@ -22,7 +22,7 @@ public class LibUser {
 
         //if all checks out, then loan out the book to the respective user
         loanBookMap.put(loanID, bookName);
-        bookCountMap.put(bookName, bookCountMap.get(bookName) - 1);
+        bookCountMap.get(bookName).decreaseCount();
         result = "Your request has been approved, " + loanID + " " + this.user + " " + bookName + "\n";
         return result;
     }
@@ -44,7 +44,7 @@ public class LibUser {
         String bookName = loanBookMap.get(loanID);
         loanBookMap.remove(loanID);
 
-        bookCountMap.put(bookName, bookCountMap.get(bookName) + 1);
+        bookCountMap.get(bookName).increaseCount();
         result = loanID + " is returned\n";
         return result;
     }

@@ -4,25 +4,28 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class TCPClientHandler implements Runnable {
-    HashMap<String,Integer> bookCountMap;
+    HashMap<String,InventoryList> bookCountMap;
     HashMap<String,LibUser> userClassMap;
     HashMap<Integer,LibUser> loanClassMap;
     Socket u;
     BookServer server;
     DataInputStream inm;
     DataOutputStream outm;
+    InventoryList head;
     boolean exit = false;
 
-    public TCPClientHandler(HashMap<String, Integer> bookCountMap,
+    public TCPClientHandler(HashMap<String, InventoryList> bookCountMap,
                             HashMap<String, LibUser> userClassMap,
                             HashMap<Integer, LibUser> loanClassMap,
                             Socket u,
-                            BookServer server) {
+                            BookServer server,
+                            InventoryList head) {
         this.bookCountMap = bookCountMap;
         this.userClassMap = userClassMap;
         this.loanClassMap = loanClassMap;
         this.u = u;
         this.server = server;
+        this.head = head;
         try {
             inm = new DataInputStream(u.getInputStream());
             outm = new DataOutputStream(u.getOutputStream());
@@ -71,7 +74,7 @@ public class TCPClientHandler implements Runnable {
                     return result;
                 }
                 //checking to see if requested book has avilability
-                if (bookCountMap.get(token[2]) == 0){
+                if (!bookCountMap.get(token[2]).isAvailable()){
                     result = "Request Failed - Book not available\n";
                     return result;
                 }
@@ -103,14 +106,12 @@ public class TCPClientHandler implements Runnable {
                 break;
             case "4":
                 // get inventory
-                for (Map.Entry<String,Integer> mapElement : bookCountMap.entrySet()) {
-                    result +=  mapElement.getKey() + " " + mapElement.getValue() + "\n";
-                }
+                result = writeInventory(head);
                 break;
             case "5":
                 // exit
                 exit=true;
-                printInventory();
+                printInventory(head);
                 result = "NONE";
                 break;
         }
@@ -133,14 +134,21 @@ public class TCPClientHandler implements Runnable {
         return message;
     }
 
-    private void printInventory()throws Exception{
+    private void printInventory(InventoryList head)throws Exception{
         String result = "";
-        for (Map.Entry<String,Integer> mapElement : bookCountMap.entrySet()) {
-            result +=  mapElement.getKey() + " " + mapElement.getValue() + "\n";
-        }
+        result = writeInventory(head);
         FileWriter fileWriter = new FileWriter("inventory.txt");
         BufferedWriter file = new BufferedWriter(fileWriter);
         file.write(result);
         file.close();
+    }
+
+    private String writeInventory(InventoryList head){
+        String result = "";
+        while(head!=null){
+            result+=head.toString();
+            head = head.next;
+        }
+        return result;
     }
 }
