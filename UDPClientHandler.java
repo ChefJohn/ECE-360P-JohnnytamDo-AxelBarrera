@@ -56,6 +56,8 @@ public class UDPClientHandler implements Runnable {
                 if(token[1].equals("t")){
                     sendClientToTCP();
                     result = "The communication mode is set to TCP\n";
+                }else if(token[1].equals("u")){
+                    result = "The communication mode is set to UDP\n";
                 }else{
                     result = "NONE";
                 }

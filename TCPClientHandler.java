@@ -51,6 +51,8 @@ public class TCPClientHandler implements Runnable {
                 //REMEMBER TO ADDRESS NONE MESSAGE RECEPTION FOR CLIENT
                 if(token[1].equals("u")){
                     result = "The communication mode is set to UDP\n";
+                }else if(token[1].equals("t")){
+                    result = "The communication mode is set to TCP\n";
                 }else{
                     result = "NONE";
                 }

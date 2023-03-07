@@ -38,6 +38,8 @@ public class BookServer {
         // parse the inventory file (also change this to the filename variable when done testing)
 //        String temp = args[0]+".txt"
         File file = new File(args[0]+".txt");
+        //!vv USE THIS FOR LINUX vv!
+        //File file = new File(args[0]);
 
         try {
             Scanner sc = new Scanner(file);
@@ -71,6 +73,9 @@ public class BookServer {
         What do we output for wrong arguments in set-mode
         Are arguments Case-sensitive
         Safe to assume that client will always have exit as its last command (It wont be in the middle or not at all there?)
+         */
+        /*
+        Check reads and writes to hashmaps
          */
     }
 

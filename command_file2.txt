@@ -14,7 +14,7 @@ begin-loan Mike "Dr. Seuss"
 get-loans Mike
 end-loan 1
 set-mode u
-end-loan 4
+end-loan 3
 end-loan 10
 get-inventory
 exit
