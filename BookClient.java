@@ -37,9 +37,9 @@ public class BookClient {
         BufferedWriter file = new BufferedWriter(fileWriter);
 
         try {
-            Scanner sc = new Scanner(new FileReader(commandFile+".txt"));
+//            Scanner sc = new Scanner(new FileReader(commandFile+".txt"));
             //!vv USE THIS FOR LINUX vv!
-            //Scanner sc = new Scanner(new FileReader(commandFile));
+            Scanner sc = new Scanner(new FileReader(commandFile));
             while (sc.hasNextLine()) {
                 String cmd = sc.nextLine();
                 String[] tokens = cmd.split(" ");

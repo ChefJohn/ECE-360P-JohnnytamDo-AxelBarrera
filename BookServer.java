@@ -38,9 +38,9 @@ public class BookServer {
 
         // parse the inventory file (also change this to the filename variable when done testing)
 //        String temp = args[0]+".txt"
-        File file = new File(args[0]+".txt");
+//        File file = new File(args[0]+".txt");
         //!vv USE THIS FOR LINUX vv!
-        //File file = new File(args[0]);
+        File file = new File(args[0]);
 
         try {
             Scanner sc = new Scanner(file);

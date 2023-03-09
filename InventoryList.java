@@ -1,14 +1,16 @@
-
+import java.util.concurrent.locks.ReentrantLock;
 
 public class InventoryList {
     String title;
     int num;
     InventoryList next;
+    ReentrantLock nodeLock;
 
     public InventoryList(String title, int num) {
         this.title = title;
         this.num = num;
         next = null;
+        ReentrantLock nodeLock = new ReentrantLock(true);
     }
 
     public void addNext(InventoryList n){
@@ -16,19 +18,31 @@ public class InventoryList {
     }
 
     public void increaseCount(){
+        nodeLock.lock();
         num+=1;
+        nodeLock.unlock();
     }
 
     public void decreaseCount(){
+        nodeLock.lock();
         num-=1;
+        nodeLock.unlock();
     }
 
     public boolean isAvailable(){
-        if(num>0) return true;
-        return false;
+        boolean answer;
+        nodeLock.lock();
+        if(num>0) answer = true;
+        else answer = false;
+        nodeLock.unlock();
+        return answer;
     }
 
     public String toString(){
-        return title + " " + Integer.toString(num) + "\n";
+        String answer = "";
+        nodeLock.lock();
+        answer = title + " " + Integer.toString(num) + "\n";
+        nodeLock.unlock();
+        return answer;
     }
 }
