@@ -1,5 +1,4 @@
 
-
 import java.net.*;
 import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
@@ -37,7 +36,7 @@ public class BookClient {
         BufferedWriter file = new BufferedWriter(fileWriter);
 
         try {
-//            Scanner sc = new Scanner(new FileReader(commandFile+".txt"));
+            //Scanner sc = new Scanner(new FileReader(commandFile+".txt"));
             //!vv USE THIS FOR LINUX vv!
             Scanner sc = new Scanner(new FileReader(commandFile));
             while (sc.hasNextLine()) {
@@ -88,7 +87,7 @@ public class BookClient {
                 String serverResponse = "";
                 if (mode){
                     sendUDP(command, udpPort, serverAddr, socket);
-                
+
                     if (switchModeFlag){
                         tcpSocket = new Socket("localhost", tcpPort);
                         mode = false;
@@ -96,7 +95,7 @@ public class BookClient {
                     }
 
                     serverResponse = receiveUDP(socket);
-                    
+
                 } else {
                     sendTCP(command, tcpPort, tcpSocket);
                     serverResponse = receiveTCP(tcpSocket);
@@ -120,12 +119,12 @@ public class BookClient {
         //interpretting commands that have 0 args
         if (commandID == 4 || commandID == 5){
             message += commandID;
-        
-        //interpretting commands that have 1 arg
-        } else if (commandID == 0 || commandID == 2 || commandID == 3){                   
+
+            //interpretting commands that have 1 arg
+        } else if (commandID == 0 || commandID == 2 || commandID == 3){
             message = commandID + "|" + token[1];
-        
-        //interpretting commands that have 2 args (so just begin-loan command)
+
+            //interpretting commands that have 2 args (so just begin-loan command)
         } else {
             message = commandID + "|" + token[1] + "|";
             for(int i =2;i< token.length-1;i++){
@@ -139,8 +138,8 @@ public class BookClient {
 
     //function that sends a message to the server thru the UDP connection
     private static void sendUDP(String message, int port,
-                                  InetAddress address,
-                                  DatagramSocket socket)throws IOException{
+                                InetAddress address,
+                                DatagramSocket socket)throws IOException{
         byte[] data = message.getBytes();
         DatagramPacket pack = new DatagramPacket(data,data.length, address, port);
         socket.send(pack);
@@ -167,7 +166,7 @@ public class BookClient {
     private static String receiveTCP(Socket socket) throws IOException{
         InputStream inputStream = socket.getInputStream();
         DataInputStream in = new DataInputStream(inputStream);
-        
+
         String message = in.readUTF();
         return message;
     }
