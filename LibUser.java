@@ -12,7 +12,7 @@ public class LibUser {
         this.user = user;
         this.bookCountMap = bookCountMap;
         this.loanBookMap = new HashMap<>();
-        ReentrantLock loanMapLock = new ReentrantLock(true);
+        loanMapLock = new ReentrantLock(true);
     }
 
     public String userBeginLoan(int loanID, String bookName){

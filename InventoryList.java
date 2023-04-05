@@ -10,7 +10,7 @@ public class InventoryList {
         this.title = title;
         this.num = num;
         next = null;
-        ReentrantLock nodeLock = new ReentrantLock(true);
+        nodeLock = new ReentrantLock(true);
     }
 
     public void addNext(InventoryList n){
