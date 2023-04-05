@@ -1,15 +1,18 @@
 
 import java.util.*;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class LibUser {
     private String user;
     private HashMap<String,InventoryList> bookCountMap;       //book name: # of books available
     private HashMap<Integer,String> loanBookMap;        //loanID: book name
+    ReentrantLock loanMapLock;
 
     public LibUser(String user, HashMap<String, InventoryList> bookCountMap) {
         this.user = user;
         this.bookCountMap = bookCountMap;
         this.loanBookMap = new HashMap<>();
+        ReentrantLock loanMapLock = new ReentrantLock(true);
     }
 
     public String userBeginLoan(int loanID, String bookName){
@@ -21,7 +24,12 @@ public class LibUser {
         String result = "";
 
         //if all checks out, then loan out the book to the respective user
+        loanMapLock.lock();
         loanBookMap.put(loanID, bookName);
+        loanMapLock.unlock();
+        /**
+         * Writes to book Count
+         */
         bookCountMap.get(bookName).decreaseCount();
         result = "Your request has been approved, " + loanID + " " + this.user + " " + bookName + "\n";
         return result;
@@ -34,7 +42,7 @@ public class LibUser {
         */
 
         String result = "";
-
+        loanMapLock.lock();
         if (loanBookMap.get(loanID) == null){
             result = loanID + " not found, no such borrow record\n";
             return result;
@@ -43,6 +51,7 @@ public class LibUser {
         //if valid, then give the loan book back
         String bookName = loanBookMap.get(loanID);
         loanBookMap.remove(loanID);
+        loanMapLock.unlock();
 
         bookCountMap.get(bookName).increaseCount();
         result = loanID + " is returned\n";
@@ -56,6 +65,7 @@ public class LibUser {
 
         String result = "";
         //checking if the respective user has any loaned books
+        loanMapLock.lock();
         if (loanBookMap.isEmpty()){
             result = "No record found for " + this.user + "\n";
             return result;
@@ -65,7 +75,7 @@ public class LibUser {
         for (Map.Entry<Integer,String> mapElement : loanBookMap.entrySet()) {
             result +=  mapElement.getKey() + " " + mapElement.getValue() + "\n";
         }
-
+        loanMapLock.unlock();
         return result;
     }
 
